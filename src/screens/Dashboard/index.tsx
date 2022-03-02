@@ -2,6 +2,7 @@ import React from 'react';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard } from '../../components/TransactionCard';
+import { ITransactionCardData } from '../../components/TransactionCard/ITransactionCardProps';
 
 import {
   Container,
@@ -15,10 +16,50 @@ import {
   Icon,
   HighlightCards,
   Transactions,
-  Title
+  Title,
+  TransactionList
 } from './styles';
 
-const Dashboard: React.FC = () => {
+export interface ITransactionListData extends ITransactionCardData {
+}
+
+const data: ITransactionCardData[] = [
+  {
+    id: '1',
+    type: 'income',
+    title: 'Desenvolvimento de site',
+    amount: 'R$ 6.400,00',
+    category: {
+      name: 'Vendas',
+      icon: 'dollar-sign'
+    },
+    date: '14/03/2022'
+  },
+  {
+    id: '2',
+    type: 'outcome',
+    title: 'Hamburger',
+    amount: 'R$ 64,00',
+    category: {
+      name: 'Alimentação',
+      icon: 'coffee'
+    },
+    date: '10/03/2022'
+  },
+  {
+    id: '3',
+    type: 'outcome',
+    title: 'Aluguel',
+    amount: 'R$ 1.400,00',
+    category: {
+      name: 'Residência',
+      icon: 'home'
+    },
+    date: '10/03/2022'
+  },
+];
+
+export default function Dashboard() {
   return (
     <Container>
       <Header>
@@ -59,12 +100,12 @@ const Dashboard: React.FC = () => {
 
       <Transactions>
         <Title>Transações</Title>
-
-        <TransactionCard />
+        <TransactionList
+          data={data}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <TransactionCard data={item} />}
+        />
       </Transactions>
-
     </Container>
   );
 }
-
-export default Dashboard;
