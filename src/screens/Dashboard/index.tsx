@@ -1,5 +1,7 @@
 import React from 'react';
 
+import HighlightCard from '../../components/HighlightCard';
+
 
 import { Container, Header, UserWrapper, UserInfo, Photo, User, UserGreeting, UserName, Icon, } from './styles';
 
@@ -18,6 +20,8 @@ const Dashboard: React.FC = () => {
           <Icon name="power" />
         </UserWrapper>
       </Header>
+
+      <HighlightCard />
     </Container>
   );
 }
