@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { HighlightCard } from '../../components/HighlightCard';
-
+import { TransactionCard } from '../../components/TransactionCard';
 
 import {
   Container,
@@ -13,7 +13,9 @@ import {
   UserGreeting,
   UserName,
   Icon,
-  HighlightCards
+  HighlightCards,
+  Transactions,
+  Title
 } from './styles';
 
 const Dashboard: React.FC = () => {
@@ -54,6 +56,13 @@ const Dashboard: React.FC = () => {
           amount='R$ 7.000,00'
         />
       </HighlightCards>
+
+      <Transactions>
+        <Title>Transações</Title>
+
+        <TransactionCard />
+      </Transactions>
+
     </Container>
   );
 }
