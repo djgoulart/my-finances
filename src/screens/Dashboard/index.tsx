@@ -1,7 +1,20 @@
 import React from 'react';
 
+import { HighlightCard } from '../../components/HighlightCard';
 
-import { Container, Header, UserWrapper, UserInfo, Photo, User, UserGreeting, UserName, Icon, } from './styles';
+
+import {
+  Container,
+  Header,
+  UserWrapper,
+  UserInfo,
+  Photo,
+  User,
+  UserGreeting,
+  UserName,
+  Icon,
+  HighlightCards
+} from './styles';
 
 const Dashboard: React.FC = () => {
   return (
@@ -18,6 +31,29 @@ const Dashboard: React.FC = () => {
           <Icon name="power" />
         </UserWrapper>
       </Header>
+
+      <HighlightCards>
+        <HighlightCard
+          key={'income'}
+          type='income'
+          title='Entradas'
+          amount='R$ 17.400,00'
+          lastTransaction='Última entrada dia 13 de abril'
+        />
+        <HighlightCard
+          key={'outcome'}
+          type='outcome'
+          title='Saídas'
+          amount='R$ 10.400,00'
+          lastTransaction='Última entrada dia 11 de abril'
+        />
+        <HighlightCard
+          key={'summary'}
+          type='summary'
+          title='Total'
+          amount='R$ 7.000,00'
+        />
+      </HighlightCards>
     </Container>
   );
 }
