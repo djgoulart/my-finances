@@ -3,6 +3,9 @@ import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
+import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
 
 import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Forms/Button';
@@ -26,11 +29,24 @@ const schema = Yup.object().shape({
 });
 
 export default function Register() {
+  const dataKey = '@myfinances:transactions';
+
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Categoria',
+  });
+
+  const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema)
   });
 
   function handleTransactionTypeSelect(type: 'income' | 'outcome') {
@@ -45,30 +61,45 @@ export default function Register() {
     setCategoryModalOpen(false);
   }
 
-  function handleFormSubmit(form: FormData) {
+  async function handleFormSubmit(form: FormData) {
+
     if (!transactionType)
       return Alert.alert('Selecione o tipo da transação');
 
     if (category.key === 'category')
       return Alert.alert('Selecione a categoria');
 
-    const data = {
+    const newTransaction = {
+      _id: String(uuid.v4().toString()),
       name: form.name,
       price: form.price,
       category: category.key,
-      transactionType
+      transactionType,
+      created_at: new Date(),
     };
 
-    console.log(data);
-  }
+    try {
+      const data = await AsyncStorage.getItem(dataKey)
+      const currentTransactions = data ? JSON.parse(data) : [];
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(schema)
-  });
+      const newTransactions = [
+        ...currentTransactions,
+        newTransaction
+      ]
+
+      await AsyncStorage.setItem(dataKey, JSON.stringify(newTransactions));
+
+      setTransactionType('');
+      setCategory({ key: 'category', name: 'Category' });
+      reset();
+
+      navigate('Transações');
+
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não foi possível salvar a transação.");
+    }
+  }
 
   return (
     <TouchableWithoutFeedback

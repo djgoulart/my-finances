@@ -15,17 +15,17 @@ import {
 export function TransactionCard({ data }: ITransactionCardProps) {
   return (
     <Container>
-      <Title>{data.title}</Title>
-      <Amount type={data.type}>
-        {data.type === 'outcome' && '- '}
-        {data.amount}
+      <Title>{data.name}</Title>
+      <Amount type={data.transactionType}>
+        {data.transactionType === 'outcome' && '- '}
+        {data.price}
       </Amount>
       <Footer>
         <Category>
           <Icon name={data.category.icon} />
           <CategoryName>{data.category.name}</CategoryName>
         </Category>
-        <Date>{data.date}</Date>
+        <Date>{data.created_at}</Date>
       </Footer>
     </Container>
   );
